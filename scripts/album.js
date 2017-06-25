@@ -28,6 +28,21 @@ var albumPicasso = {
      ]
  };
 
+ var albumBrandNew = {
+     title: 'The Devil And God Are Raging Inside Me',
+     artist: 'Brand New',
+     label: 'Interscope Records',
+     year: '2006',
+     albumArtUrl: 'assets/images/album_covers/22.jpg',
+     songs: [
+         { title: 'Sowing Season', duration: '4:31' },
+         { title: 'Millstone', duration: '4:17' },
+         { title: 'Jesus Christ', duration: '5:18'},
+         { title: 'Degausser', duration: '5:33' },
+         { title: 'Limousine', duration: '7:42'}
+     ]
+ };
+
  var createSongRow = function(songNumber, songName, songLength) {
      var template =
         '<tr class="album-view-song-item">'
@@ -40,24 +55,21 @@ var albumPicasso = {
      return template;
  };
 
+ albumTitle.firstChild.nodeValue = album.title;
+ albumArtist.firstChild.nodeValue = album.artist;
+ albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
+ albumImage.setAttribute('src', album.albumArtUrl);
+
  var setCurrentAlbum = function(album) {
-     // #1
+
      var albumTitle = document.getElementsByClassName('album-view-title')[0];
      var albumArtist = document.getElementsByClassName('album-view-artist')[0];
      var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
      var albumImage = document.getElementsByClassName('album-cover-art')[0];
      var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
 
-     // #2
-     albumTitle.firstChild.nodeValue = album.title;
-     albumArtist.firstChild.nodeValue = album.artist;
-     albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
-     albumImage.setAttribute('src', album.albumArtUrl);
-
-     // #3
      albumSongList.innerHTML = '';
 
-     // #4
      for (var i = 0; i < album.songs.length; i++) {
          albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
      }
@@ -65,4 +77,14 @@ var albumPicasso = {
 
  window.onload = function() {
      setCurrentAlbum(albumPicasso);
+
+     var albums = [albumPicasso, albumMarconi, albumBrandNew];
+     var index = 1;
+     albumImage.addEventListener("click", function(event) {
+       setCurrentAlbum(album[index]);
+       index++;
+       if (index == albums.length) {
+          index = 0;
+       }
+     )};
  };
